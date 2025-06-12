@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from models import Base, engine
 from auth import auth_router, get_config
 from satellites import satellites_router
+from upload import upload_router
 
 app = FastAPI()
 
@@ -23,6 +24,7 @@ app.add_middleware(
 # Подключаем маршруты
 app.include_router(auth_router)
 app.include_router(satellites_router)
+app.include_router(upload_router)
 
 @AuthJWT.load_config
 def load_config():

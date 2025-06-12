@@ -1,10 +1,11 @@
 # auth.py
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel
 from sqlalchemy.future import select
 from passlib.context import CryptContext
 from fastapi_jwt_auth import AuthJWT
 from models import AsyncSessionLocal, Satellite
+from fastapi.responses import RedirectResponse
 
 auth_router = APIRouter()
 
@@ -60,3 +61,17 @@ async def login_satellite(user: LoginModel, Authorize: AuthJWT = Depends()):
     Authorize.set_refresh_cookies(refresh_token)
     
     return {"msg": "Successfully logged in"}
+
+@auth_router.post("/logout")
+async def logout_satellite(Authorize: AuthJWT = Depends()):
+    # Удаляем JWT cookies
+    Authorize.unset_jwt_cookies()
+    
+    # Перенаправляем на страницу входа
+    response = RedirectResponse(url="/login", status_code=302)
+    
+    # Дополнительно очищаем cookies на случай, если unset_jwt_cookies() не сработает
+    response.delete_cookie("access_token_cookie")
+    response.delete_cookie("refresh_token_cookie")
+    
+    return response
