@@ -9,36 +9,53 @@ function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleRegister = () => {
+  const validateInputs = () => {
     if (!name || !password) {
-      setError("Имя и пароль обязательны");
+      return "Имя и пароль обязательны";
+    }
+    if (!/^[a-zA-Z0-9_-]{3,20}$/.test(name)) {
+      return "Имя должно содержать 3-20 символов: буквы, цифры, '-', '_'";
+    }
+    if (password.length < 6) {
+      return "Пароль должен содержать минимум 6 символов";
+    }
+    if (desc.length > 200) {
+      return "Описание не должно превышать 200 символов";
+    }
+    return null;
+  };
+
+  const handleRegister = () => {
+    const validationError = validateInputs();
+    if (validationError) {
+      setError(validationError);
       return;
     }
-    
+
     setIsLoading(true);
     setError(null);
-    
+
     fetch("http://localhost:8000/register", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, password, description: desc })
     })
-    .then(res => {
-      if (res.ok) {
-        alert("Регистрация успешна");
-        setName("");
-        setPassword("");
-        setDesc("");
-      } else {
-        throw new Error('Ошибка регистрации');
-      }
-    })
-    .catch(err => {
-      setError(err.message);
-    })
-    .finally(() => {
-      setIsLoading(false);
-    });
+      .then(res => {
+        if (res.ok) {
+          alert("Регистрация успешна");
+          setName("");
+          setPassword("");
+          setDesc("");
+        } else {
+          throw new Error('Ошибка регистрации');
+        }
+      })
+      .catch(err => {
+        setError(err.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -90,10 +107,10 @@ function RegisterPage() {
             </div>
           )}
 
-          <button 
+          <button
             className="login-button"
             onClick={handleRegister}
-            disabled={!name || !password || isLoading}
+            disabled={isLoading}
           >
             {isLoading ? 'Регистрация...' : 'Зарегистрировать'}
           </button>

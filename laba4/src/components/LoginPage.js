@@ -34,17 +34,24 @@ function LoginPage() {
     if (!selected) return;
     
     setIsLoading(true);
+    setError(null);
     fetch("http://localhost:8000/login", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify({ name: selected.name, password }),
     })
-    .then(res => {
+    .then(async res => {
       if (res.ok) {
         navigate("/dashboard");
+      } else if (res.status === 401) {
+        const msg = await res.text();
+        throw new Error(msg || "Неверный пароль");
+      } else if (res.status === 403) {
+        const msg = await res.text();
+        throw new Error(msg || "Доступ запрещён");
       } else {
-        throw new Error('Login failed');
+        throw new Error("Ошибка входа в систему");
       }
     })
     .catch(err => {
@@ -111,6 +118,11 @@ function LoginPage() {
               <div className="login-form">
                 <h3>Вход для: <span className="satellite-name">{selected.name}</span></h3>
                 <div className="input-group">
+                  {error && (
+                    <div className="error-message">
+                      <p>{error}</p>
+                    </div>
+                  )}
                   <label htmlFor="password">Пароль</label>
                   <input
                     id="password"

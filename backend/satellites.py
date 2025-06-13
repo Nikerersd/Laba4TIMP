@@ -20,7 +20,6 @@ async def list_satellites():
     async with AsyncSessionLocal() as session:
         result = await session.execute(select(Satellite.id, Satellite.name, Satellite.description))
         sats = result.all()
-        # Возвращаем список без паролей
         return [{"id": s.id, "name": s.name, "description": s.description} for s in sats]
 
 @satellites_router.get("/satellites/{sat_id}")
@@ -32,9 +31,8 @@ async def get_description(sat_id: int):
             raise HTTPException(status_code=404, detail="Satellite not found")
         return {"id": sat.id, "name": sat.name, "description": sat.description}
 
-# Пример защищённого маршрута, доступного только при наличии JWT
 @satellites_router.get("/dashboard")
 def dashboard(Authorize: AuthJWT = Depends()):
-    Authorize.jwt_required()  # Требуется валидный access-токен
+    Authorize.jwt_required()
     current = Authorize.get_jwt_subject()
     return {"msg": f"Welcome, {current}! This is a protected dashboard."}

@@ -1,0 +1,18 @@
+2025-06-13 08:22:35,968 - INFO - Satellite logged in: sput2
+2025-06-13 08:43:19,195 - WARNING - Failed login attempt for satellite: sput2
+2025-06-13 08:43:19,196 - ERROR - Login error for sput2: 401: Bad name or password
+Traceback (most recent call last):
+  File "/mnt/c/Users/nikru/OneDrive/Desktop/Работы ТИМП/Laba4TIMP/backend/auth.py", line 66, in login_satellite
+    raise HTTPException(status_code=401, detail="Bad name or password")
+fastapi.exceptions.HTTPException: 401: Bad name or password
+2025-06-13 08:49:49,138 - WARNING - Failed login attempt for satellite: sput2
+2025-06-13 08:49:49,139 - ERROR - Login error for sput2: 401: Bad name or password
+Traceback (most recent call last):
+  File "/mnt/c/Users/nikru/OneDrive/Desktop/Работы ТИМП/Laba4TIMP/backend/auth.py", line 66, in login_satellite
+    raise HTTPException(status_code=401, detail="Bad name or password")
+fastapi.exceptions.HTTPException: 401: Bad name or password
+2025-06-13 09:10:36,549 - INFO - Satellite logged in: sput2
+2025-06-13 09:20:56,787 - INFO - Satellite logged out
+2025-06-13 09:22:32,751 - INFO - Satellite registered: sput3
+2025-06-13 09:25:32,150 - INFO - Satellite logged in: sput3
+2025-06-13 11:29:20,490 - INFO - Satellite logged in: sput3

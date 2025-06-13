@@ -1,4 +1,3 @@
-// App.js
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import RegisterPage from './components/RegisterPage';
@@ -9,7 +8,6 @@ function PrivateRoute({ children }) {
   const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    // Проверяем наличие валидного токена через защищённый запрос
     fetch("http://localhost:8000/dashboard", {
       credentials: 'include'
     })

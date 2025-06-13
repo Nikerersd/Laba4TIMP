@@ -55,7 +55,6 @@ class DataLog(Base):
     action_type = relationship("ActionType", back_populates="data_logs")
     satellite = relationship("Satellite", back_populates="data_logs")
 
-# Создание таблиц (например, при запуске или вручную через Alembic)
 async def init_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

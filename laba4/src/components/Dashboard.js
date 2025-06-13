@@ -204,7 +204,7 @@ function Dashboard() {
                 <textarea
                   value={rawData}
                   onChange={(e) => setRawData(e.target.value)}
-                  placeholder="Текст, JSON, команды..."
+                  placeholder="Текст..."
                   rows={5}
                   className="input-field"
                 />
